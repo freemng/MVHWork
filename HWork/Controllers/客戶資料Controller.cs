@@ -7,17 +7,26 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HWork.Models;
+using Omu.ValueInjecter;
 
 namespace HWork.Controllers
 {
     public class 客戶資料Controller : Controller
     {
-        private BankCustomerEntities db = new BankCustomerEntities();
+        //private BankCustomerEntities db = new BankCustomerEntities();
+        客戶資料Repository repo;
+
+        public 客戶資料Controller()
+        {
+            repo = RepositoryHelper.Get客戶資料Repository();
+        }
+
 
         // GET: 客戶資料
         public ActionResult Index()
         {
-            return View(db.客戶資料.ToList());
+            //return View(db.客戶資料.ToList());
+            return View(repo.All());
         }
 
         [HttpPost]
@@ -26,11 +35,13 @@ namespace HWork.Controllers
         {
             if (searchString != null)
             {
-                return View(db.客戶資料.Where(s=> s.客戶名稱.Contains(searchString)).ToList());
+                //return View(db.客戶資料.Where(s=> s.客戶名稱.Contains(searchString)).ToList());
+                return View(repo.All().Where(s => s.客戶名稱.Contains(searchString)).ToList());
+
 
             }
 
-            return View(db.客戶資料.ToList());
+            return View(repo.All());
         }
 
         // GET: 客戶資料/Details/5
@@ -40,7 +51,8 @@ namespace HWork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.All().FirstOrDefault(p => p.Id == id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -63,8 +75,11 @@ namespace HWork.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶資料.Add(客戶資料);
-                db.SaveChanges();
+                //db.客戶資料.Add(客戶資料);
+                //db.SaveChanges();
+                repo.Add(客戶資料);
+                repo.UnitOfWork.Commit();
+
                 return RedirectToAction("Index");
             }
 
@@ -78,7 +93,8 @@ namespace HWork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.All().FirstOrDefault(p => p.Id == id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -95,8 +111,14 @@ namespace HWork.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶資料).State = EntityState.Modified;
-                db.SaveChanges();
+                var item = repo.All().FirstOrDefault(p => p.Id == 客戶資料.Id);
+
+                //db.Entry(客戶資料).State = EntityState.Modified;
+                //db.SaveChanges();
+                item.InjectFrom(客戶資料);
+                repo.UnitOfWork.Commit();
+
+
                 return RedirectToAction("Index");
             }
             return View(客戶資料);
@@ -109,7 +131,8 @@ namespace HWork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            客戶資料 客戶資料 = repo.All().FirstOrDefault(p => p.Id == id.Value);
             if (客戶資料 == null)
             {
                 return HttpNotFound();
@@ -122,9 +145,13 @@ namespace HWork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶資料 客戶資料 = db.客戶資料.Find(id);
-            db.客戶資料.Remove(客戶資料);
-            db.SaveChanges();
+            //客戶資料 客戶資料 = db.客戶資料.Find(id);
+            //db.客戶資料.Remove(客戶資料);
+            //db.SaveChanges();
+            客戶資料 客戶資料 = repo.All().FirstOrDefault(p => p.Id == id);
+            repo.Delete(客戶資料);
+            repo.UnitOfWork.Commit();
+
             return RedirectToAction("Index");
         }
 
@@ -132,7 +159,7 @@ namespace HWork.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }

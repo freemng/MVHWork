@@ -7,17 +7,27 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HWork.Models;
+using Omu.ValueInjecter;
 
 namespace HWork.Controllers
 {
     public class 客戶聯絡人Controller : Controller
     {
-        private BankCustomerEntities db = new BankCustomerEntities();
+        //private BankCustomerEntities db = new BankCustomerEntities();
+        客戶聯絡人Repository repo;
+        客戶資料Repository repo客戶資料;
+
+        public 客戶聯絡人Controller()
+        {
+            repo = RepositoryHelper.Get客戶聯絡人Repository();
+            repo客戶資料 = RepositoryHelper.Get客戶資料Repository(repo.UnitOfWork);
+        }
 
         // GET: 客戶聯絡人
         public ActionResult Index()
         {
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+            //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+            var 客戶聯絡人 = repo.All().Include(p => p.客戶資料);
             return View(客戶聯絡人.ToList());
         }
 
@@ -27,14 +37,14 @@ namespace HWork.Controllers
         {
             if (searchString != null)
             {
-                var search客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料).Where(s => s.姓名.Contains(searchString)).ToList();
+                var search客戶聯絡人 = repo.All().Include(客 => 客.客戶資料).Where(s => s.姓名.Contains(searchString)).ToList();
                 return View(search客戶聯絡人.ToList());
 
             }
 
-            var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
+            var 客戶聯絡人 = repo.All().Include(客 => 客.客戶資料);
 
-            return View(db.客戶資料.ToList());
+            return View(客戶聯絡人.ToList());
         }
 
         // GET: 客戶聯絡人/Details/5
@@ -44,7 +54,8 @@ namespace HWork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.All().FirstOrDefault(p => p.Id == id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -55,7 +66,7 @@ namespace HWork.Controllers
         // GET: 客戶聯絡人/Create
         public ActionResult Create()
         {
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱");
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱");
             return View();
         }
 
@@ -68,12 +79,15 @@ namespace HWork.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.客戶聯絡人.Add(客戶聯絡人);
-                db.SaveChanges();
+                //db.客戶聯絡人.Add(客戶聯絡人);
+                //db.SaveChanges();
+                repo.Add(客戶聯絡人);
+                repo.UnitOfWork.Commit();
+
                 return RedirectToAction("Index");
             }
 
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -84,12 +98,13 @@ namespace HWork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.All().FirstOrDefault(p => p.Id == id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -102,11 +117,18 @@ namespace HWork.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(客戶聯絡人).State = EntityState.Modified;
-                db.SaveChanges();
+                var item = repo.All().FirstOrDefault(p => p.Id == 客戶聯絡人.Id);
+
+                //db.Entry(客戶聯絡人).State = EntityState.Modified;
+                //db.SaveChanges();
+                item.InjectFrom(客戶聯絡人);
+                repo.UnitOfWork.Commit();
+
+
                 return RedirectToAction("Index");
             }
-            ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            //ViewBag.客戶Id = new SelectList(db.客戶資料, "Id", "客戶名稱", 客戶聯絡人.客戶Id);
+            ViewBag.客戶Id = new SelectList(repo客戶資料.All(), "Id", "客戶名稱", 客戶聯絡人.客戶Id);
             return View(客戶聯絡人);
         }
 
@@ -117,7 +139,7 @@ namespace HWork.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            客戶聯絡人 客戶聯絡人 = repo.All().FirstOrDefault(p => p.Id == id.Value);
             if (客戶聯絡人 == null)
             {
                 return HttpNotFound();
@@ -130,9 +152,13 @@ namespace HWork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
-            db.客戶聯絡人.Remove(客戶聯絡人);
-            db.SaveChanges();
+            //客戶聯絡人 客戶聯絡人 = db.客戶聯絡人.Find(id);
+            //db.客戶聯絡人.Remove(客戶聯絡人);
+            //db.SaveChanges();
+            客戶聯絡人 客戶聯絡人 = repo.All().FirstOrDefault(p => p.Id == id);
+            repo.Delete(客戶聯絡人);
+            repo.UnitOfWork.Commit();
+
             return RedirectToAction("Index");
         }
 
@@ -140,7 +166,7 @@ namespace HWork.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repo.Dispose();
             }
             base.Dispose(disposing);
         }
