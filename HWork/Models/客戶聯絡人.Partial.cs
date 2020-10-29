@@ -3,6 +3,7 @@ namespace HWork.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using HWork.CustomValidation;
 
     [MetadataType(typeof(客戶聯絡人MetaData))]
     public partial class 客戶聯絡人
