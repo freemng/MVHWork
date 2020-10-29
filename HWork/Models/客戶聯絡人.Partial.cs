@@ -31,6 +31,8 @@ namespace HWork.Models
         [MaxLength(50, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 電話 { get; set; }
 
+        public Nullable<bool> IsDeleted { get; set; }
+
         public virtual 客戶資料 客戶資料 { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-
 namespace HWork.Models
 {
 	public static class RepositoryHelper
@@ -8,7 +7,6 @@ namespace HWork.Models
 			return new EFUnitOfWork();
 		}
 		
-
 		public static sysdiagramsRepository GetsysdiagramsRepository()
 		{
 			var repository = new sysdiagramsRepository();
@@ -22,7 +20,6 @@ namespace HWork.Models
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}
-
 
 		public static 客戶統計清單Repository Get客戶統計清單Repository()
 		{
@@ -38,7 +35,6 @@ namespace HWork.Models
 			return repository;
 		}
 
-
 		public static 客戶資料Repository Get客戶資料Repository()
 		{
 			var repository = new 客戶資料Repository();
@@ -52,7 +48,6 @@ namespace HWork.Models
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}
-
 
 		public static 客戶銀行資訊Repository Get客戶銀行資訊Repository()
 		{
@@ -68,7 +63,6 @@ namespace HWork.Models
 			return repository;
 		}
 
-
 		public static 客戶聯絡人Repository Get客戶聯絡人Repository()
 		{
 			var repository = new 客戶聯絡人Repository();
@@ -82,6 +76,5 @@ namespace HWork.Models
 			repository.UnitOfWork = unitOfWork;
 			return repository;
 		}
-
 	}
 }

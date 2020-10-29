@@ -1,10 +1,5 @@
 
 
-
-
-
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,5 +17,4 @@ namespace HWork.Models
 		void Delete(T entity);
 	}
 }
-
 

@@ -26,10 +26,23 @@ namespace HWork.Models
             GC.SuppressFinalize(this);
         }
 
+        public override IQueryable<客戶資料> All()
+        {
+            return base.All().Where(p => p.IsDeleted == false);
+        }
+
+        public override void Delete(客戶資料 entity)
+        {
+            this.UnitOfWork.Context.Configuration.ValidateOnSaveEnabled = false;
+            entity.IsDeleted = true;
+        }
+
     }
 
 	public  interface I客戶資料Repository : IRepository<客戶資料>
 	{
+        IQueryable<客戶資料> All();
+        void Delete(客戶資料 entity);
 
 	}
 }

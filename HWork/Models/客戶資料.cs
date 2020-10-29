@@ -11,8 +11,7 @@ namespace HWork.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class 客戶資料
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,28 +22,13 @@ namespace HWork.Models
         }
     
         public int Id { get; set; }
-
-        [Required]
-        [MaxLength(50, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 客戶名稱 { get; set; }
-
-        [Required]
-        [MaxLength(8, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 統一編號 { get; set; }
-
-        [Required]
-        [MaxLength(50, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 電話 { get; set; }
-
-        [MaxLength(50, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 傳真 { get; set; }
-
-        [MaxLength(100, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 地址 { get; set; }
-
-        [MaxLength(250, ErrorMessage = "輸入字串不可超過{1}字")]
-        [EmailAddress(ErrorMessage = "電郵格式錯誤")]
         public string Email { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }

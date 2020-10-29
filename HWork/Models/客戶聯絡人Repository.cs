@@ -25,10 +25,22 @@ namespace HWork.Models
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public override IQueryable<客戶聯絡人> All()
+        {
+            return base.All().Where(p => p.IsDeleted == false);
+        }
+
+        public override void Delete(客戶聯絡人 entity)
+        {
+            this.UnitOfWork.Context.Configuration.ValidateOnSaveEnabled = false;
+            entity.IsDeleted = true;
+        }
     }
 
 	public  interface I客戶聯絡人Repository : IRepository<客戶聯絡人>
 	{
-
-	}
+        IQueryable<客戶聯絡人> All();
+        void Delete(客戶聯絡人 entity);
+    }
 }
