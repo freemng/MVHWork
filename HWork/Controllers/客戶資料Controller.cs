@@ -16,6 +16,18 @@ namespace HWork.Controllers
         //private BankCustomerEntities db = new BankCustomerEntities();
         客戶資料Repository repo;
 
+        List<SelectListItem> 客戶分類 = new List<SelectListItem>() {
+            new SelectListItem {
+                Text = "客戶分類1", Value = "1"
+            },
+            new SelectListItem {
+                Text = "客戶分類2", Value = "2"
+            },
+            new SelectListItem {
+                Text = "客戶分類3", Value = "3"
+            },
+        };
+
         public 客戶資料Controller()
         {
             repo = RepositoryHelper.Get客戶資料Repository();
@@ -35,11 +47,13 @@ namespace HWork.Controllers
         {
             if (searchString != null)
             {
+
                 //return View(db.客戶資料.Where(s=> s.客戶名稱.Contains(searchString)).ToList());
                 return View(repo.All().Where(s => s.客戶名稱.Contains(searchString)).ToList());
 
 
             }
+
 
             return View(repo.All());
         }
@@ -63,6 +77,8 @@ namespace HWork.Controllers
         // GET: 客戶資料/Create
         public ActionResult Create()
         {
+            ViewBag.lst客戶分類 = 客戶分類;
+
             return View();
         }
 
@@ -77,7 +93,8 @@ namespace HWork.Controllers
             {
                 //db.客戶資料.Add(客戶資料);
                 //db.SaveChanges();
-                repo.Add(客戶資料);
+                //repo.Add(客戶資料);
+                repo.AddRecord(客戶資料);
                 repo.UnitOfWork.Commit();
 
                 return RedirectToAction("Index");

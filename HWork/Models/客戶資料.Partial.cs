@@ -33,6 +33,7 @@ namespace HWork.Models
         public string 地址 { get; set; }
 
         [StringLength(250, ErrorMessage="欄位長度不得大於 250 個字元")]
+        [EmailAddress(ErrorMessage = "電郵格式錯誤")]
         public string Email { get; set; }
 
         public Nullable<bool> IsDeleted { get; set; }
