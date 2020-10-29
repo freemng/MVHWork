@@ -32,6 +32,7 @@ namespace HWork.Models
         [DuplicatedEmail]
         public string Email { get; set; }
         [MaxLength(50, ErrorMessage = "輸入字串不可超過{1}字")]
+        [RegularExpression(@"\d{4}-\d{6}", ErrorMessage = "「手機」的電話格式必須為正確的格式 ( e.g. 0911-111111 )")]
         public string 手機 { get; set; }
         [MaxLength(50, ErrorMessage = "輸入字串不可超過{1}字")]
         public string 電話 { get; set; }
