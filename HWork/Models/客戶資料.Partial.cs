@@ -36,6 +36,10 @@ namespace HWork.Models
         [EmailAddress(ErrorMessage = "電郵格式錯誤")]
         public string Email { get; set; }
 
+        [StringLength(50, ErrorMessage = "欄位長度不得大於 50 個字元")]
+        public string 客戶分類 { get; set; }
+
+
         public Nullable<bool> IsDeleted { get; set; }
 
         public virtual ICollection<客戶銀行資訊> 客戶銀行資訊 { get; set; }

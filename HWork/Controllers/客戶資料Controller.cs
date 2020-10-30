@@ -16,16 +16,16 @@ namespace HWork.Controllers
         //private BankCustomerEntities db = new BankCustomerEntities();
         客戶資料Repository repo;
 
-        List<SelectListItem> 客戶分類 = new List<SelectListItem>() {
-            new SelectListItem {
+        List<SelectListItem> vlst客戶分類 = new List<SelectListItem>() {
+            new SelectListItem() {
                 Text = "客戶分類1", Value = "1"
             },
-            new SelectListItem {
+            new SelectListItem() {
                 Text = "客戶分類2", Value = "2"
             },
-            new SelectListItem {
+            new SelectListItem() {
                 Text = "客戶分類3", Value = "3"
-            },
+            }
         };
 
         public 客戶資料Controller()
@@ -77,7 +77,7 @@ namespace HWork.Controllers
         // GET: 客戶資料/Create
         public ActionResult Create()
         {
-            ViewBag.lst客戶分類 = 客戶分類;
+            ViewBag.lst客戶分類 = new SelectList(vlst客戶分類, "Value", "Text", "1"); ;
 
             return View();
         }
@@ -87,14 +87,14 @@ namespace HWork.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Create([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email,客戶分類")] 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {
                 //db.客戶資料.Add(客戶資料);
                 //db.SaveChanges();
                 //repo.Add(客戶資料);
-                repo.AddRecord(客戶資料);
+                repo.Add(客戶資料);
                 repo.UnitOfWork.Commit();
 
                 return RedirectToAction("Index");
@@ -116,6 +116,8 @@ namespace HWork.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.lst客戶分類 = new SelectList(vlst客戶分類, "Value", "Text", "1"); ;
             return View(客戶資料);
         }
 
@@ -124,7 +126,7 @@ namespace HWork.Controllers
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email")] 客戶資料 客戶資料)
+        public ActionResult Edit([Bind(Include = "Id,客戶名稱,統一編號,電話,傳真,地址,Email,客戶分類")] 客戶資料 客戶資料)
         {
             if (ModelState.IsValid)
             {

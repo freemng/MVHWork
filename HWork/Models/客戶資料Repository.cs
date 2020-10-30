@@ -38,12 +38,6 @@ namespace HWork.Models
             entity.IsDeleted = true;
         }
 
-        public void AddRecord(客戶資料 entity)
-        {
-            entity.IsDeleted = false;
-            this.Add(entity);
-        }
-
 
     }
 
@@ -51,6 +45,5 @@ namespace HWork.Models
 	{
         IQueryable<客戶資料> All();
         void Delete(客戶資料 entity);
-        void AddRecord(客戶資料 entity);
     }
 }
