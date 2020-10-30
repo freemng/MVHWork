@@ -14,9 +14,21 @@
     @Html.AntiForgeryToken()
     <p>
         搜尋客戶聯絡人姓名: @Html.TextBox("SearchString")
+        @Html.Hidden("filterString", "")
         <input type="submit" value="Search" />
     </p>
 }
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+<p>
+
+    搜尋客戶客戶分類 : @Html.DropDownList("filterString", new SelectList(ViewBag.lst職稱, "Value", "Text"), "", new { @class = "form-control" })
+    @Html.Hidden("searchString", "")
+    <input type="submit" value="Search" />
+</p>
+}
+
 <table class="table">
     <tr>
         <th>
