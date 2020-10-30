@@ -47,31 +47,33 @@ namespace HWork.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(string searchType, string searchString)
         {
-            ViewBag.lst客戶分類 = new SelectList(vlst客戶分類, "Value", "Text", "1"); ;
+            ViewBag.lst客戶分類 = new SelectList(vlst客戶分類, "Value", "Text", "1");
 
-            if (searchString != null && searchType != null)
-            {
-                if (searchType == "客戶名稱")
-                {
-                    return View(repo.All().Where(s => s.客戶名稱.Contains(searchString)).ToList());
-                }
-                else if (searchType == "客戶分類")
-                {
-                    return View(repo.All().Where(s => s.客戶分類.Contains(searchString)).ToList());
-                }
-                else
-                {
-                    return View(repo.All().ToList());
-                }
+            //if (searchString != null && searchType != null)
+            //{
+            //    if (searchType == "客戶名稱")
+            //    {
+            //        return View(repo.All().Where(s => s.客戶名稱.Contains(searchString)).ToList());
+            //    }
+            //    else if (searchType == "客戶分類")
+            //    {
+            //        return View(repo.All().Where(s => s.客戶分類.Contains(searchString)).ToList());
+            //    }
+            //    else
+            //    {
+            //        return View(repo.All().ToList());
+            //    }
 
-                //return View(db.客戶資料.Where(s=> s.客戶名稱.Contains(searchString)).ToList());
-
-
-
-            }
+            //    //return View(db.客戶資料.Where(s=> s.客戶名稱.Contains(searchString)).ToList());
 
 
-            return View(repo.All());
+
+            //}
+
+
+            //return View(repo.All());
+            return View(repo.getFiltered客戶資料(searchType, searchString));
+
         }
 
         // GET: 客戶資料/Details/5
