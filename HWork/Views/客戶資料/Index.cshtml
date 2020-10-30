@@ -14,19 +14,18 @@
     @Html.AntiForgeryToken()
     <p>
         搜尋客戶名稱: @Html.TextBox("SearchString")
+        @Html.Hidden("SearchType", "客戶名稱")
         <input type="submit" value="Search" />
     </p>
-    @Html.Hidden("SearchType", "客戶名稱")
 }
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <p>
-        搜尋客戶客戶分類 : @Html.DropDownList("searchString", new SelectList(ViewBag.lst客戶分類, "Value", "Text"), "", new { @class = "form-control" })
-
+        @Html.DisplayNameFor(model => model.客戶分類): @Html.DropDownList("searchString", new SelectList(ViewBag.lst客戶分類, "Value", "Text"), "", new { @class = "form-control" })
+        @Html.Hidden("SearchType", "客戶分類")
         <input type="submit" value="Search" />
     </p>
-    @Html.Hidden("SearchType", "客戶分類")
 }
 
 }
