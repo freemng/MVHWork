@@ -37,19 +37,35 @@ namespace HWork.Controllers
         // GET: 客戶資料
         public ActionResult Index()
         {
+            ViewBag.lst客戶分類 = new SelectList(vlst客戶分類, "Value", "Text", "1"); ;
+
             //return View(db.客戶資料.ToList());
             return View(repo.All());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchType, string searchString)
         {
-            if (searchString != null)
+            ViewBag.lst客戶分類 = new SelectList(vlst客戶分類, "Value", "Text", "1"); ;
+
+            if (searchString != null && searchType != null)
             {
+                if (searchType == "客戶名稱")
+                {
+                    return View(repo.All().Where(s => s.客戶名稱.Contains(searchString)).ToList());
+                }
+                else if (searchType == "客戶分類")
+                {
+                    return View(repo.All().Where(s => s.客戶分類.Contains(searchString)).ToList());
+                }
+                else
+                {
+                    return View(repo.All().ToList());
+                }
 
                 //return View(db.客戶資料.Where(s=> s.客戶名稱.Contains(searchString)).ToList());
-                return View(repo.All().Where(s => s.客戶名稱.Contains(searchString)).ToList());
+
 
 
             }
