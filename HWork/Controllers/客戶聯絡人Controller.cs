@@ -28,21 +28,50 @@ namespace HWork.Controllers
         {
             //var 客戶聯絡人 = db.客戶聯絡人.Include(客 => 客.客戶資料);
             var 客戶聯絡人 = repo.All().Include(p => p.客戶資料);
+            List<SelectListItem> vlst職稱 = new List<SelectListItem>();
+            foreach (var v職稱 in 客戶聯絡人.Select(u => u.職稱).Distinct())
+            {
+                if (!string.IsNullOrEmpty(v職稱)){
+                    vlst職稱.Add(new SelectListItem()
+                    {
+                        Text = v職稱,
+                        Value = v職稱
+                    });
+                }
+            }
+            ViewBag.lst職稱 = vlst職稱;
+
             return View(客戶聯絡人.ToList());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchString, string filterString)
         {
+            var 客戶聯絡人 = repo.All().Include(p => p.客戶資料);
+            List<SelectListItem> vlst職稱 = new List<SelectListItem>();
+            foreach (var v職稱 in 客戶聯絡人.Select(u => u.職稱).Distinct())
+            {
+                if (!string.IsNullOrEmpty(v職稱)){
+                    vlst職稱.Add(new SelectListItem()
+                    {
+                        Text = v職稱,
+                        Value = v職稱
+                    });
+                }
+            }
+            ViewBag.lst職稱 = vlst職稱;
+
             if (searchString != null)
             {
                 var search客戶聯絡人 = repo.All().Include(客 => 客.客戶資料).Where(s => s.姓名.Contains(searchString)).ToList();
                 return View(search客戶聯絡人.ToList());
 
+            } else if (filterString != null)
+            {
+                var search客戶聯絡人 = repo.All().Include(客 => 客.客戶資料).Where(s => s.職稱.Contains(filterString)).ToList();
+                return View(search客戶聯絡人.ToList());
             }
-
-            var 客戶聯絡人 = repo.All().Include(客 => 客.客戶資料);
 
             return View(客戶聯絡人.ToList());
         }
